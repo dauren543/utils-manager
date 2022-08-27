@@ -1,4 +1,4 @@
-module utils-manager
+module github.com/dauren543/utils-manager
 
 go 1.17
 
