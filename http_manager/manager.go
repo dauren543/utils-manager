@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type httpManager struct {
+type HttpManager struct {
 	BaseURL       string
 	Client        *fasthttp.Client
 	ApiToken      *string
@@ -19,7 +19,7 @@ type httpManager struct {
 }
 
 func NewHttpManager(baseUrl string, accessToken, accessTokenKey, username, password *string, okStatusCodes ...int) *httpManager {
-	return &httpManager{
+	return &HttpManager{
 		BaseURL: baseUrl,
 		Client: &fasthttp.Client{
 			MaxIdleConnDuration: 30 * time.Second,
@@ -32,7 +32,7 @@ func NewHttpManager(baseUrl string, accessToken, accessTokenKey, username, passw
 	}
 }
 
-func (m *httpManager) sendRequest(method, url string, body []byte, req *fasthttp.Request) ([]byte, error) {
+func (m *HttpManager) sendRequest(method, url string, body []byte, req *fasthttp.Request) ([]byte, error) {
 	url = m.BaseURL + url
 	req.SetRequestURIBytes([]byte(url))
 
@@ -59,7 +59,7 @@ func (m *httpManager) sendRequest(method, url string, body []byte, req *fasthttp
 	return res.Body(), nil
 }
 
-func (m *httpManager) contains(val int) bool {
+func (m *HttpManager) contains(val int) bool {
 	for _, i := range m.OkStatusCodes {
 		if i == val {
 			return true
@@ -68,7 +68,7 @@ func (m *httpManager) contains(val int) bool {
 	return false
 }
 
-func (m *httpManager) basicAuth(username, password string) string {
+func (m *HttpManager) basicAuth(username, password string) string {
 	auth := username + ":" + password
 	return "Basic " + base64.StdEncoding.EncodeToString([]byte(auth))
 }
